@@ -17,7 +17,7 @@
 
     /* Type scale */
     --text-xl: clamp(2rem, 5vw, 3.2rem); /* page titles */
-    --text-lg: 1.15rem;                  /* card titles, blog titles */
+    --text-lg: 1.15rem;                  /* card titles, writings titles */
     --text-md: 0.9rem;                   /* body copy, excerpts */
     --text-sm: 0.8rem;                   /* captions, labels, buttons */
     --text-xs: 0.8rem;                   /* meta, tags, tiny labels */
@@ -283,7 +283,7 @@ main { min-height: calc(100vh - var(--nav-h)); }
 .tips-title,
 .drop-label,
 .queue-name,
-.blog-title,
+.writings-title,
 .about-body h2 {
     font-family: var(--font-head);
     font-weight: 700;
@@ -295,14 +295,14 @@ main { min-height: calc(100vh - var(--nav-h)); }
 .tips-title       { font-size: var(--text-sm); letter-spacing: 0.14em; }
 .drop-label       { font-size: var(--text-sm); letter-spacing: 0.1em; margin-bottom: 0.3rem; }
 .queue-name       { font-size: var(--text-sm); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.blog-title       { font-size: var(--text-lg); margin-bottom: 0.3rem; cursor: pointer; transition: color 0.15s; }
-.blog-title:hover { color: var(--red); }
+.writings-title       { font-size: var(--text-lg); margin-bottom: 0.3rem; cursor: pointer; transition: color 0.15s; }
+.writings-title:hover { color: var(--red); }
 .about-body h2    { font-size: 1.8rem; margin-bottom: 1.5rem; }
 
 /* Meta text */
 .art-caption,
-.blog-date,
-.blog-read,
+.writings-date,
+.writings-read,
 .queue-size,
 .queue-status,
 .drop-sub,
@@ -318,8 +318,8 @@ main { min-height: calc(100vh - var(--nav-h)); }
 
 .art-caption            { color: var(--mid); margin-top: 0.6rem; }
 .art-caption strong     { display: block; font-weight: 600; font-size: var(--text-sm); color: var(--ink); letter-spacing: 0.03em; }
-.blog-date              { font-weight: 600; color: var(--red); line-height: 1.4; padding-top: 0.2rem; }
-.blog-read              { font-weight: 600; color: var(--ink); border-bottom: 1px solid var(--red); display: inline-block; margin-top: 0.5rem; }
+.writings-date              { font-weight: 600; color: var(--red); line-height: 1.4; padding-top: 0.2rem; }
+.writings-read              { font-weight: 600; color: var(--ink); border-bottom: 1px solid var(--red); display: inline-block; margin-top: 0.5rem; }
 .queue-size             { color: var(--mid); }
 .queue-status           { white-space: nowrap; font-weight: 600; }
 .drop-sub               { color: var(--mid); letter-spacing: 0.12em; }
@@ -609,10 +609,10 @@ textarea { resize: vertical; min-height: 100px; }
 
 .hero-links { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
 
-/* Blog */
-.blog-list { list-style: none; }
+/* writings */
+.writings-list { list-style: none; }
 
-.blog-item {
+.writings-item {
     display: grid;
     grid-template-columns: 90px 1fr;
     gap: 1.5rem;
@@ -621,7 +621,7 @@ textarea { resize: vertical; min-height: 100px; }
     border-bottom: 1px solid var(--rule);
 }
 
-.blog-excerpt { font-size: var(--text-md); color: var(--mid); line-height: 1.7; }
+.writings-excerpt { font-size: var(--text-md); color: var(--mid); line-height: 1.7; }
 
 /* About */
 .about-grid {
@@ -969,6 +969,6 @@ footer {
 /* Responsive */
 @media (max-width: 520px) {
     .art-grid    { grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .blog-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .writings-item { grid-template-columns: 1fr; gap: 0.5rem; }
     footer         { flex-direction: column; align-items: flex-start; }
 }
