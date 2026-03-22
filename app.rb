@@ -16,4 +16,9 @@ get '/' do
     erb :index
 end
 
+not_found do
+    redirect '/'
+end
+
+require_relative './admin'
 require_relative './upload'
