@@ -1,0 +1,223 @@
+
+<script>
+    const dropZone   = document.getElementById('dropZone')
+    const fileInput  = document.getElementById('fileInput')
+    const fileQueue  = document.getElementById('fileQueue')
+    const submitBtn  = document.getElementById('submitBtn')
+    const submitLbl  = document.getElementById('submitLabel')
+    const clearBtn   = document.getElementById('clearBtn')
+
+    let queuedFiles = []
+
+    console.log('dropZone:', dropZone)
+    console.log('fileInput:', fileInput)
+
+    dropZone.addEventListener('dragover', e => {
+        e.preventDefault()
+        dropZone.classList.add('drag-over')
+    }); //
+
+    ['dragleave', 'dragend'].forEach(evt => dropZone.addEventListener(evt, () => dropZone.classList.remove('drag-over')))
+
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault()
+        dropZone.classList.remove('drag-over')
+        addFiles(Array.from(e.dataTransfer.files))
+    })
+
+    fileInput.addEventListener('change', () => {
+        addFiles(Array.from(fileInput.files))
+        fileInput.value = '' // allow re-selecting same file
+    })
+
+    let addFiles = (files) => {
+        const valid = files.filter(f => {
+            const ok = f.size <= 20 * 1024 * 1024
+            if (!ok) showToast(`${f.name} exceeds 20 MB - skipped`, 'error')
+            return ok
+        })
+
+        valid.forEach(f => {
+            if (queuedFiles.find(q => q.name === f.name && q.size === f.size)) return // dedup
+            queuedFiles.push(f)
+            renderQueueItem(f)
+        })
+
+        updateSubmitBtn()
+    }
+
+    let formatSize = (bytes) => {
+        if (bytes < 1024) return bytes + ' B'
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB'
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+    }
+
+    let renderQueueItem = (file) => {
+        const li = document.createElement('li')
+        li.className = 'queue-item'
+        li.dataset.name = file.name
+
+        const isImage = file.type.startsWith('image/')
+        let thumbHtml
+
+        if (isImage) {
+            const url = URL.createObjectURL(file)
+            thumbHtml = `<img class="queue-thumb" src="${url}" alt="${file.name}">`
+        } else {
+            thumbHtml = `<div class="queue-thumb-placeholder">🎬</div>`
+        }
+
+        li.innerHTML = `
+            ${thumbHtml}
+            <div class="queue-info">
+            <div class="queue-name" title="${file.name}">${file.name}</div>
+            <div class="queue-size">${formatSize(file.size)}</div>
+            <div class="queue-progress"><div class="queue-progress-fill" id="prog-${CSS.escape(file.name)}"></div></div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.3rem;">
+            <span class="queue-status ready" id="status-${CSS.escape(file.name)}">Ready</span>
+            <button class="queue-remove" title="Remove" onclick="removeFile('${file.name}')">✕</button>
+            </div>
+        `
+        fileQueue.appendChild(li)
+    }
+
+    let removeFile = (name) => {
+        queuedFiles = queuedFiles.filter(f => f.name !== name)
+        const li = fileQueue.querySelector(`[data-name="${name}"]`)
+        if (li) li.remove()
+        updateSubmitBtn()
+    }
+
+    clearBtn.addEventListener('click', () => {
+        queuedFiles = []
+        fileQueue.innerHTML = ''
+        updateSubmitBtn()
+    })
+
+    let updateSubmitBtn = () => {
+        const count = queuedFiles.length
+        submitBtn.disabled = count === 0
+        submitLbl.textContent = count === 0
+            ? 'Upload files'
+            : `Upload ${count} file${count > 1 ? 's' : ''}`
+    }
+
+    // ── FORM SUBMIT (AJAX) ──
+    // This submits via fetch so you get progress feedback.
+    // The server should respond with JSON: { success: true } or { success: false, error: '...' }
+    // If you prefer standard Sinatra form POST + redirect, remove this listener and let the
+    // <form> submit normally — the flash messages at the top will handle feedback.
+
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+        e.preventDefault()
+
+        if (queuedFiles.length === 0) { showToast('No files in queue', 'error'); return }
+
+        const title   = document.getElementById('title').value.trim()
+        const section = document.getElementById('section').value
+
+        if (!title)   { showToast('Please enter a title', 'error'); return }
+        if (!section) { showToast('Please choose a section', 'error'); return }
+
+        const formData = new FormData(e.target)
+
+        // Replace input files with our JS-managed queue
+        formData.delete('media[]')
+        queuedFiles.forEach(f => formData.append('media[]', f))
+
+        submitBtn.disabled = true;
+        submitLbl.textContent = 'Uploading…'
+
+        try {
+            // XHR for progress tracking
+            await uploadWithProgress(formData)
+            showToast(`${queuedFiles.length} file${queuedFiles.length > 1 ? 's' : ''} uploaded`, 'success')
+            clearBtn.click()
+
+            // Optionally redirect to the section page:
+            // window.location.href = '/' + section
+
+        } catch (err) {
+            showToast(err.message || 'Upload failed', 'error')
+            submitBtn.disabled = false
+            updateSubmitBtn()
+        }
+    })
+
+    let uploadWithProgress = (formData) => {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest()
+
+            xhr.upload.addEventListener('progress', e => {
+                if (e.lengthComputable) {
+                    const pct = Math.round((e.loaded / e.total) * 100)
+                    document.querySelectorAll('.queue-progress-fill').forEach(bar => { bar.style.width = pct + '%' })
+                    document.querySelectorAll('.queue-status').forEach(s => {
+                        s.textContent = pct < 100 ? `${pct}%` : 'Processing…'
+                        s.className = 'queue-status uploading'
+                    })
+                    submitLbl.textContent = `Uploading… ${pct}%`
+                }
+            })
+
+            xhr.addEventListener('load', () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    let response
+                    try { response = JSON.parse(xhr.responseText) } catch(_) { response = {} }
+
+                    document.querySelectorAll('.queue-item').forEach(item => {
+                        const name = item.dataset.name
+                        const uploaded = response.files?.find(f => f.filename === name)
+                        const status = item.querySelector('.queue-status')
+                        const thumb = item.querySelector('.queue-thumb, .queue-thumb-placeholder')
+
+                        if (uploaded) {
+                            status.textContent = 'Done'
+                            status.className = 'queue-status done'
+                            // Swap placeholder for the real uploaded image
+                            if (thumb && !thumb.matches('img')) {
+                                const img = document.createElement('img')
+                                img.className = 'queue-thumb'
+                                img.src = uploaded.path
+                                img.alt = name
+                                thumb.replaceWith(img)
+                            }
+                        } else {
+                            status.textContent = 'Error'
+                            status.className = 'queue-status error'
+                        }
+                    })
+
+                    resolve(response)
+                } else {
+                    let msg = 'Upload failed'
+                    try { msg = JSON.parse(xhr.responseText).error || msg } catch(_) {}
+                    document.querySelectorAll('.queue-status').forEach(s => {
+                        s.textContent = 'Error'
+                        s.className = 'queue-status error'
+                    })
+                    reject(new Error(msg))
+                }
+            })
+
+            xhr.addEventListener('error', () => reject(new Error('Network error')))
+            xhr.open('POST', document.getElementById('uploadForm').action)
+            for (let [key, val] of formData.entries()) console.log(key, val) // debug
+            xhr.send(formData)
+        })
+    }
+
+    let showToast = (msg, type = 'success') => {
+        const wrap = document.getElementById('toastWrap')
+        const t = document.createElement('div')
+        t.className = `toast ${type}`
+        t.textContent = msg
+        wrap.appendChild(t)
+        requestAnimationFrame(() => { requestAnimationFrame(() => t.classList.add('show')) })
+        setTimeout(() => {
+            t.classList.remove('show')
+            setTimeout(() => t.remove(), 300)
+        }, 3500)
+    }
+</script>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%= erb :_head %>
+
+<body>
+    <%= erb :_header %>
+    <div class="page-wrap">
+        <div class="page-heading">
+            <h1>Upload Media</h1>
+            <span class="sub">Add work to the site</span>
+        </div>
+        <!--
+        Sinatra route: POST /admin/upload
+        Set enctype and action when converting to ERB:
+            <form action="/admin/upload" method="POST" enctype="multipart/form-data" id="uploadForm">
+        -->
+        <form id="uploadForm" action="/admin/upload" method="POST" enctype="multipart/form-data">
+            <div class="upload-layout">
+                <%= erb :_upload_drop %>
+                <%= erb :_upload_meta %>
+            </div>
+        </form>
+    </div>
+
+    <div class="toast-wrap" id="toastWrap"></div>
+
+    <%= erb :_upload_script %>
+</body>
+</html>

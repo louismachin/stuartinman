@@ -1,0 +1,48 @@
+<div>
+    <div class="meta-panel">
+        <div class="meta-panel-title">Details</div>
+
+        <label class="field-label" for="title">Title <span class="required">*</span></label>
+        <input type="text" id="title" name="title" placeholder="Untitled" required />
+
+        <label class="field-label" for="section">Section <span class="required">*</span></label>
+        <div class="select-wrap">
+            <select id="section" name="section" required>
+                <option value="">— Choose section —</option>
+                <option value="paintings">Paintings</option>
+                <option value="drawings">Drawings</option>
+                <option value="photographs">Photographs</option>
+                <option value="archive">Archive</option>
+            </select>
+        </div>
+
+        <label class="field-label" for="medium">Medium / Type</label>
+        <input type="text" id="medium" name="medium" placeholder="e.g. Oil on canvas, Digital photograph" />
+
+        <label class="field-label" for="dimensions">Dimensions</label>
+        <input type="text" id="dimensions" name="dimensions" placeholder="e.g. 60 × 80 cm" />
+
+        <label class="field-label" for="year">Year</label>
+        <input type="text" id="year" name="year" placeholder="2025" maxlength="4" />
+
+        <label class="field-label" for="description">Description / Notes</label>
+        <textarea id="description" name="description" placeholder="Optional notes about this work…"></textarea>
+
+        <div class="checkbox-row">
+            <input type="checkbox" id="published" name="published" value="1" checked />
+            <label for="published">Publish immediately</label>
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox" id="featured" name="featured" value="1" />
+            <label for="featured">Feature on homepage</label>
+        </div>
+
+        <div class="submit-row">
+            <button type="submit" class="btn-upload" id="submitBtn" disabled>
+                <span id="submitLabel">Upload files</span>
+            </button>
+            <button type="button" class="btn-clear" id="clearBtn">Clear queue</button>
+        </div>
+    </div>
+</div>

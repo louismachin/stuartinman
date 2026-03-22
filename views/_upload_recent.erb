@@ -1,0 +1,30 @@
+<div class="rule-block"><span>Recently uploaded</span></div>
+    <!--
+      In ERB, replace this static grid with a loop:
+      <% @recent_uploads.each do |work| %>
+        <div class="recent-item">
+          <div class="recent-thumb">
+            <img src="<%= work.thumb_url %>" alt="<%= work.title %>">
+          </div>
+          <div class="recent-tag"><%= work.section %></div>
+          <div class="recent-caption"><%= work.title %></div>
+        </div>
+      <% end %>
+    -->
+<div class="recent-grid" id="recentGrid">
+    <div class="recent-item">
+        <div class="recent-thumb">🖼</div>
+        <div class="recent-tag">Paintings</div>
+        <div class="recent-caption">Untitled, 2025</div>
+    </div>
+    <div class="recent-item">
+        <div class="recent-thumb">📷</div>
+        <div class="recent-tag">Photographs</div>
+        <div class="recent-caption">Study, 2025</div>
+    </div>
+    <div class="recent-item">
+        <div class="recent-thumb">✏️</div>
+        <div class="recent-tag">Drawings</div>
+        <div class="recent-caption">Sketch, 2025</div>
+    </div>
+</div>
