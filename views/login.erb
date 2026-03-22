@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%= erb :_head %>
+
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    #login-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        width: max(320px, 40vw);
+    }
+</style>
+
+<body>
+    <div id="login-wrapper">
+        <input type="text" id="password" name="password" placeholder="Password..." />
+        <button type="submit" class="btn-upload" id="submitBtn" onclick="submitForm()">
+            <span id="submitLabel">Login</span>
+        </button>
+    </div>
+
+    <script>
+            let submitForm = () => {
+                let password = document.getElementById('password').value
+                fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({ password: password })
+                }).then(res => {
+                    if (res.status == 200) {
+                        document.location.href = '/admin'
+                    } else {
+                        window.location.reload()
+                    }
+                })
+            }
+    </script>
+</body>
+</html>

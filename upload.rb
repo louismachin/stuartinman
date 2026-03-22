@@ -1,8 +1,10 @@
 get '/admin/upload' do
+    protect!
     erb :upload
 end
 
 post '/admin/upload' do
+    protect!
     title     = params[:title]
     section   = params[:section]
     medium    = params[:medium]
