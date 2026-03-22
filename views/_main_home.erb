@@ -1,0 +1,38 @@
+<div class="page active" id="home">
+    <div class="home-hero">
+        <img class="hero-img" src="./img/featured.jpg" alt="...">
+        <div class="hero-text">
+            <h2>Stuart<br><em>Inman</em></h2>
+            <p class="tagline">Painter · Photographer · Poet</p>
+            <p>
+                Welcome. This site is a home for my paintings, drawings, photographs, and occasional writing.
+                Based in [location], I have been making work for [X] years.
+            </p>
+            <p>
+                Much of my existing work is currently on Flickr and Instagram — links below while this site fills out.
+            </p>
+            <div class="hero-links">
+                <a class="ext-link" href="https://www.flickr.com/photos/stuartinman/" target="_blank" rel="noopener">Flickr ↗</a>
+                <a class="ext-link" href="https://www.instagram.com/inman.stuart/" target="_blank" rel="noopener">Instagram ↗</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="rule-block"><span>Recent work</span></div>
+
+    <!-- 3-up recent works preview — replace placeholders with <img> -->
+    <div class="art-grid" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));">
+        <div class="art-item" onclick="openLightbox('Recent work 1')">
+            <div class="art-thumb-placeholder">Painting 1</div>
+            <div class="art-caption"><strong>Title</strong>Medium · Year</div>
+        </div>
+        <div class="art-item" onclick="openLightbox('Recent work 2')">
+            <div class="art-thumb-placeholder">Photograph 1</div>
+            <div class="art-caption"><strong>Title</strong>Photograph · Year</div>
+        </div>
+        <div class="art-item" onclick="openLightbox('Recent work 3')">
+            <div class="art-thumb-placeholder">Drawing 1</div>
+            <div class="art-caption"><strong>Title</strong>Drawing · Year</div>
+        </div>
+    </div>
+</div>

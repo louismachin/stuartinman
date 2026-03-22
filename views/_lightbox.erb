@@ -1,0 +1,21 @@
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-placeholder" id="lightboxImg">Image</div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<script>
+    let openLightbox = (name) => {
+        document.getElementById('lightboxImg').textContent = name
+        document.getElementById('lightboxCaption').textContent = name
+        document.getElementById('lightbox').classList.add('open')
+    }
+
+    let closeLightbox = () => {
+        document.getElementById('lightbox').classList.remove('open')
+    }
+
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeLightbox()
+    })
+</script>
