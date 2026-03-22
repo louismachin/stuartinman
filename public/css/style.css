@@ -23,7 +23,7 @@
     --text-xs: 0.8rem;                   /* meta, tags, tiny labels */
 
     /* Layout */
-    --nav-h: 64px;
+    --nav-h: 96px;
     --max: 1080px;
 }
 
