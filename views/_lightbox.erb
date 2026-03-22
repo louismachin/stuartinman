@@ -5,10 +5,17 @@
 </div>
 
 <script>
-    let openLightbox = (name) => {
-        document.getElementById('lightboxImg').textContent = name
-        document.getElementById('lightboxCaption').textContent = name
-        document.getElementById('lightbox').classList.add('open')
+    let openLightbox = (src, title) => {
+        const lb = document.getElementById('lightbox')
+        const img = lb.querySelector('img') || document.createElement('img')
+        img.src = src
+        img.alt = title
+        document.getElementById('lightboxCaption').textContent = title
+        if (!lb.querySelector('img')) {
+            document.getElementById('lightboxImg').replaceWith(img)
+            img.id = 'lightboxImg'
+        }
+        lb.classList.add('open')
     }
 
     let closeLightbox = () => {

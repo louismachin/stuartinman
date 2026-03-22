@@ -22,3 +22,4 @@ end
 
 require_relative './admin'
 require_relative './upload'
+require_relative './content'

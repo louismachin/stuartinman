@@ -4,17 +4,11 @@
         <span class="sub">Oil · Acrylic · Mixed media</span>
     </div>
     <div class="art-grid" id="paintingsGrid">
-        <div class="art-item" onclick="openLightbox('Painting 1')">
-            <div class="art-thumb-placeholder">Painting 1</div>
-            <div class="art-caption"><strong>Title</strong>Oil on canvas · 60 × 80 cm · 2024</div>
-        </div>
-        <div class="art-item" onclick="openLightbox('Painting 2')">
-            <div class="art-thumb-placeholder">Painting 2</div>
-            <div class="art-caption"><strong>Title</strong>Oil on canvas · 50 × 70 cm · 2024</div>
-        </div>
-        <div class="art-item" onclick="openLightbox('Painting 3')">
-            <div class="art-thumb-placeholder">Painting 3</div>
-            <div class="art-caption"><strong>Title</strong>Mixed media · 40 × 60 cm · 2023</div>
-        </div>
+        <% paintings.each do |painting| %>
+            <div class="art-item" onclick="openLightbox('<%= painting.uri %>', '<%= painting.title %>')">
+                <img class="art-thumb" src="<%= painting.uri %>" alt="<%= painting.title %>">
+                <div class="art-caption"><strong><%= painting.title %></strong><%= painting.medium %> · <%= painting.dimension %> · <%= painting.year %></div>
+            </div>
+        <% end %>
     </div>
 </div>
