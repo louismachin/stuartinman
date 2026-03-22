@@ -4,7 +4,8 @@
 <%= erb :_head %>
 
 <body>
-    <%= erb :_header %>
+    <%= erb :_header, locals: { admin: 1 } %>
+
     <div class="page-wrap">
         <div class="page-heading">
             <h1>Upload Media</h1>
@@ -26,5 +27,7 @@
     <div class="toast-wrap" id="toastWrap"></div>
 
     <%= erb :_upload_script %>
+
+    <%= erb :_footer %>
 </body>
 </html>
