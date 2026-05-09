@@ -1,0 +1,29 @@
+<div id="under-construction">
+    <p id="title">This page is under construction.</p>
+    <p>Much of my existing work is currently on Flickr and Instagram - links below while this site fills out.</p>
+    <div class="hero-links">
+        <a class="ext-link invert" href="https://www.flickr.com/photos/stuartinman/" target="_blank" rel="noopener">Flickr ↗</a>
+        <a class="ext-link invert" href="https://www.instagram.com/inman.stuart/" target="_blank" rel="noopener">Instagram ↗</a>
+    </div>
+</div>
+
+<style>
+    #under-construction {
+        position: fixed;
+        top: calc(50% - var(--nav-h));
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        padding:  8px 32px;
+        padding-bottom: 32px;
+        background: color-mix(in srgb, var(--red), transparent 25%);
+        color: white;
+    }
+
+    #under-construction #title {
+        font-family: var(--font-head);
+        font-size: var(--text-xl);
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+</style>

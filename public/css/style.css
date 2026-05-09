@@ -484,8 +484,16 @@ textarea { resize: vertical; min-height: 100px; }
     transition: background 0.15s, color 0.15s;
 }
 
+
+.ext-link.invert {
+    border: 2px solid var(--paper);
+}
+
 .ext-link:hover,
 .cv-link:hover { background: var(--ink); color: var(--paper); }
+
+.ext-link.invert:hover,
+.cv-link.invert:hover { background: var(--paper); color: var(--ink); }
 
 .cv-link {
     display: inline-flex;
